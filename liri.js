@@ -7,28 +7,24 @@ var keys = require("./keys.js");
 var spotify = new Spotify(keys.spotify);
 var fs = require("fs");
 
-//grab CLI input
+//api command
 var command = process.argv[2];
-var x;
-//attaches multiple word arguments
+//parse query string
+var terms = "";
 for (var i = 3; i < process.argv.length; i++) {
-  if (i > 3 && i < process.argv.length) {
-    x = x + " " + process.argv[i];
-  }
-  else {
-    x = x + process.argv[i];
-  }
-}
+    terms += process.argv[i] + " ";
+};
+console.log(terms);
 
 //API switcheroo
 switch (command) {
   case "concert-this":
-    bandTownData(x);
+    bandTownData(terms);
     break;
 
   case "spotify-this-song":
-    if (x) {
-      spotifySong(x);
+    if (terms) {
+      spotifySong(terms);
     }
     else {
       spotifySong("the sign ace of base");
@@ -36,8 +32,8 @@ switch (command) {
     break;
 
   case "movie-this":
-    if (x) {
-      omdbData(x)
+    if (terms) {
+      omdbData(terms)
     }
     else {
       omdbData("Mr. Nobody")
@@ -55,16 +51,16 @@ switch (command) {
 
 function bandTownData(artist) {
   var bitUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
-  axios.get(bitUrl).then(function(body) {
+  axios.get(bitUrl).then(function(error, response) {
       //var body = JSON.parse(response);
 
-      console.log("Event name: " + body[0].venue.name);
-      console.log("Event date: " + moment(body[0].datetime, "MM/DD/YYYY"));
-      console.log("Venue location: " + body[0].venue.city + ", " + body.venue.region);
+      console.log("Event name: " + response[0].venue.name);
+      console.log("Event date: " + moment(response[0].datetime, "MM/DD/YYYY"));
+      console.log("Venue location: " + response[0].venue.city + ", " + body.venue.region);
 
-      fs.appendFile('log.txt', "Event name: " + body[0].venue.name);
-      fs.appendFile('log.txt', "Event date: " + moment(body[0].datetime, "MM/DD/YYYY"));
-      fs.appendFile('log.txt', "Venue location: " + body[0].venue.city + ", " + body.venue.region);
+      fs.appendFile('log.txt', "Event name: " + response[0].venue.name);
+      fs.appendFile('log.txt', "Event date: " + moment(response[0].datetime, "MM/DD/YYYY"));
+      fs.appendFile('log.txt', "Venue location: " + response[0].venue.city + ", " + body.venue.region);
   })
     .catch(function(error) {
       console.log('Error occurred: ' + error)
@@ -79,9 +75,9 @@ function spotifySong(song) {
       query: song,
       limit: 5
     }).then(
-    function (data) {
-      console.log(data);
-          var songData = data.tracks.items[0];
+    function (response) {
+      //console.log(response);
+          var songData = response.tracks.items[0];
           console.log("Artist: " + songData.artists[0].name);
           console.log("Song: " + songData.name);
           console.log("Preview URL: " + songData.preview_url);
@@ -103,27 +99,27 @@ function spotifySong(song) {
 function omdbData(movie) {
   var omdbURL = 'http://www.omdbapi.com/?apikey=trilogy&t=' + movie + '&plot=short&tomatoes=true';
 
-  axios.get(omdbURL).then(function (body) {
+  axios.get(omdbURL).then(function (error, response) {
       //var body = JSON.parse(response);
 
-      console.log("Title: " + body.Title);
-      console.log("Release Year: " + body.Year);
-      console.log("IMdB Rating: " + body.imdbRating);
-      console.log("Rotten Tomatoes Rating: " + body.tomatoRating);
-      console.log("Country: " + body.Country);
-      console.log("Language: " + body.Language);
-      console.log("Plot: " + body.Plot);
-      console.log("Actors: " + body.Actors);
+      console.log("Title: " + response.Title);
+      console.log("Release Year: " + response.Year);
+      console.log("IMdB Rating: " + response.imdbRating);
+      console.log("Rotten Tomatoes Rating: " + response.tomatoRating);
+      console.log("Country: " + response.Country);
+      console.log("Language: " + response.Language);
+      console.log("Plot: " + response.Plot);
+      console.log("Actors: " + response.Actors);
 
       //adds text to log.txt
-      fs.appendFile('log.txt', "Title: " + body.Title);
-      fs.appendFile('log.txt', "Release Year: " + body.Year);
-      fs.appendFile('log.txt', "IMdB Rating: " + body.imdbRating);
-      fs.appendFile('log.txt', "Rotten Tomatoes Rating: " + body.tomatoRating);
-      fs.appendFile('log.txt', "Country: " + body.Country);
-      fs.appendFile('log.txt', "Language: " + body.Language);
-      fs.appendFile('log.txt', "Plot: " + body.Plot);
-      fs.appendFile('log.txt', "Actors: " + body.Actors);
+      fs.appendFile('log.txt', "Title: " + response.Title);
+      fs.appendFile('log.txt', "Release Year: " + response.Year);
+      fs.appendFile('log.txt', "IMdB Rating: " + response.imdbRating);
+      fs.appendFile('log.txt', "Rotten Tomatoes Rating: " + response.tomatoRating);
+      fs.appendFile('log.txt', "Country: " + response.Country);
+      fs.appendFile('log.txt', "Language: " + response.Language);
+      fs.appendFile('log.txt', "Plot: " + response.Plot);
+      fs.appendFile('log.txt', "Actors: " + response.Actors);
 
       if (movie === "Mr. Nobody") {
         console.log("-----------------------");
