@@ -18,11 +18,7 @@
   },
   "homepage": "https://github.com/dmcneary/liri-node-app#readme",
   "dependencies": {
-<<<<<<< HEAD
-    "axios": "^0.18.1",
-=======
     "axios": "^0.19.0",
->>>>>>> 878c1a3eb2974af965dc885553e28dd9cc98652e
     "dotenv": "^6.2.0",
     "moment": "^2.24.0",
     "node-spotify-api": "^1.0.7"
