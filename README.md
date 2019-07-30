@@ -3,6 +3,9 @@ LIRI is a primitive riff on Apple's SIRI, utilizing AJAX calls through axios to 
 
 ### Instructions:
 
+LIRI uses a few dependencies, so please install those first by installing them in the app directory:  
+`npm i`
+
 If no command is given, instructions are returned to the client.  
 ![screenshot](screenshots/default.JPG)  
 
@@ -23,4 +26,4 @@ Currently with limited functionality, "do-what-it-says" utilized file system int
 Possible developments include:
 * Additional APIs
 * Better error handling
-* Who knows?!
+* Browser interactivity
